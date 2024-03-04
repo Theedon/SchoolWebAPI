@@ -1,0 +1,18 @@
+{
+  "name": "schoolwebapi",
+  "version": "1.0.0",
+  "description": "a simple school web API for managing the data of teachers, classrooms,and students",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "",
+    "dev": "nodemon ./dist/index.js"
+  },
+  "author": "Theedon",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3",
+    "nodemon": "^3.1.0",
+    "tsc": "^2.0.4"
+  }
+}
