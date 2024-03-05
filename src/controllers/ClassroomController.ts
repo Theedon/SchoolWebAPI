@@ -3,7 +3,16 @@ import type { Request, Response } from "express";
 import { classroomSchema } from "../validators";
 import type { ClassroomInputType } from "../types";
 
+/**
+ * Class containing controller methods for CREATE AND READ operations on classrooms.
+ */
 class ClassroomController {
+  /**
+   * Gets a single classroom by ID.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when classroom is fetched from db and response sent
+   */
   async getClassroom(req: Request, res: Response): Promise<void> {
     const { params } = req;
     try {
@@ -26,6 +35,12 @@ class ClassroomController {
     }
   }
 
+  /**
+   * Gets all classrooms.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when classrooms are fetched and response sent
+   */
   async getClassrooms(req: Request, res: Response): Promise<void> {
     try {
       const classrooms = await prisma.classroom.findMany({});
@@ -40,6 +55,12 @@ class ClassroomController {
     }
   }
 
+  /**
+   * Creates a new classroom or classrooms from an array.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when classroom(s) are created
+   */
   async createClassroom(req: Request, res: Response): Promise<void> {
     const { body: classroomsData } = req;
     try {
@@ -62,6 +83,12 @@ class ClassroomController {
     }
   }
 
+  /**
+   * Creates a single new classroom record in the database.
+   * @param body - The classroom data to create.
+   * @param res - The response object to send the result to.
+   * @returns A promise that resolves when the record is created.
+   */
   private async createSingleClassroom(
     body: ClassroomInputType,
     res: Response
@@ -87,6 +114,12 @@ class ClassroomController {
     }
   }
 
+  /**
+   * Creates multiple new classroom records in the database.
+   * @param classroomsArray - An array of classroom data objects to create.
+   * @param res - The response object to send the result to.
+   * @returns A promise that resolves when all records are created.
+   */
   private async createMultipleClassrooms(
     classroomsArray: ClassroomInputType[],
     res: Response
