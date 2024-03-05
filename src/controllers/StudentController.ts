@@ -40,6 +40,39 @@ class StudentController {
     }
   }
 
+  async getTeacherAssignedToStudent(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    const { params } = req;
+    try {
+      if (params.id && params.id.length > 0) {
+        const studentId: number = parseInt(params.id);
+        const studentToTeacher = await prisma.student.findUnique({
+          where: {
+            id: studentId,
+          },
+          include: {
+            classroom: {
+              include: {
+                teacher: true,
+              },
+            },
+          },
+        });
+        const teacher = studentToTeacher?.classroom.teacher.name;
+        if (teacher === null) {
+          res.status(404).send("Teacher Not Found");
+          return;
+        }
+        res.send(teacher);
+      }
+    } catch (error: any) {
+      console.error("Error Getting Teacher: ", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+
   async createStudent(req: Request, res: Response): Promise<void> {
     const { body: studentsData } = req;
     try {
