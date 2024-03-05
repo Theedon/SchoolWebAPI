@@ -2,6 +2,7 @@ import prisma from "../lib/client";
 import type { Request, Response } from "express";
 import { teacherSchema } from "../validators";
 import type { TeacherInputType } from "../types";
+import { Student } from "@prisma/client";
 
 class TeacherController {
   async getTeacher(req: Request, res: Response): Promise<void> {
@@ -58,6 +59,38 @@ class TeacherController {
       }
     } catch (error: unknown) {
       console.error("Error creating teacher: ", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+
+  async getStudentsUnderTeacher(req: Request, res: Response): Promise<void> {
+    const { params } = req;
+    try {
+      if (params.id && params.id.length > 0) {
+        const teacherId: number = parseInt(params.id);
+        const teacherToStudents = await prisma.teacher.findUnique({
+          where: {
+            id: teacherId,
+          },
+          include: {
+            classrooms: {
+              include: {
+                students: true,
+              },
+            },
+          },
+        });
+        const students = teacherToStudents?.classrooms.flatMap(
+          (classroom) => classroom.students
+        );
+        if (students === null) {
+          res.status(404).send("Students Not Found");
+          return;
+        }
+        res.send(students);
+      }
+    } catch (error: any) {
+      console.error("Error Getting Students: ", error);
       res.status(500).send("Internal Server Error");
     }
   }
