@@ -2,11 +2,11 @@
   "name": "schoolwebapi",
   "version": "1.0.0",
   "description": "a simple school web API for managing the data of teachers, classrooms,and students",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "jest",
-    "start": "npm run build && nodemon ./dist/index.js",
+    "start": "npm run build && nodemon ./dist/server.js",
     "dev": "nodemon",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
