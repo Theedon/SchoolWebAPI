@@ -16,9 +16,11 @@
   "author": "Theedon",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.10.2",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "prettier": "^3.2.5",
+    "prisma": "^5.10.2",
     "tsc": "^2.0.4"
   },
   "devDependencies": {
@@ -33,6 +35,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "jest": "^29.7.0",
     "nodemon": "^3.1.0",
+    "prettier-plugin-prisma": "^5.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Model definition for Teacher.
+model Teacher {
+  id         Int      @id @default(autoincrement())
+  name       String
+  age        Int
+  experience Int
+  bio        String?
+  phone      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  //one to many relation with classroom
+  classrooms Classroom[]
+
+  @@map("teachers")
+}
+
+// Model definition for Student.
+model Student {
+  id          Int      @id @default(autoincrement())
+  name        String
+  age         Int
+  bio         String?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  classroomId Int
+
+  classroom Classroom @relation(fields: [classroomId], references: [id])
+
+  @@map("students")
+}
+
+// Model definition for Classroom.
+model Classroom {
+  id        Int      @id @default(autoincrement())
+  name      String
+  capacity  Int?
+  location  String?
+  teacherId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+
+  //one to many relation with student
+  students Student[]
+
+  @@map("classrooms")
+}
