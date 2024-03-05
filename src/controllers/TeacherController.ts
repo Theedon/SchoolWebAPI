@@ -6,17 +6,37 @@ import type { TeacherInputType } from "../types";
 class TeacherController {
   async getTeacher(req: Request, res: Response): Promise<void> {
     const { params } = req;
-    if (params.id && params.id.length > 0) {
-      const teacherId: number = parseInt(params.id);
-      const teacher = await prisma.teacher.findUnique({
-        where: {
-          id: teacherId,
-        },
-      });
-      res.send(teacher);
-    } else {
+    try {
+      if (params.id && params.id.length > 0) {
+        const teacherId: number = parseInt(params.id);
+        const teacher = await prisma.teacher.findUnique({
+          where: {
+            id: teacherId,
+          },
+        });
+        if (teacher === null) {
+          res.status(404).send("Teacher Not Found");
+          return;
+        }
+        res.send(teacher);
+      }
+    } catch (error: any) {
+      console.error("Error Getting Teacher: ", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+
+  async getTeachers(req: Request, res: Response): Promise<void> {
+    try {
       const teachers = await prisma.teacher.findMany({});
+      if (teachers === null) {
+        res.status(404).send("Teachers Not Found");
+        return;
+      }
       res.send(teachers);
+    } catch (error: any) {
+      console.error("Error Getting Teachers: ", error);
+      res.status(500).send("Internal Server Error");
     }
   }
 
@@ -94,7 +114,7 @@ class TeacherController {
     } catch (error: any) {
       console.error("Error creating teachers: ", error);
       if (error.code === "P2002") {
-        res.status(400).send(`One of the teachers already exists`);
+        res.status(400).send(`Teacher(s) already exist`);
         return;
       }
       res.status(500).send("Internal Server Error");

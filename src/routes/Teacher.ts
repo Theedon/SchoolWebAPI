@@ -6,8 +6,12 @@ const router = express.Router();
 
 const teacherController = new TeacherController();
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   await teacherController.getTeacher(req, res);
+});
+
+router.get("/", async (req, res) => {
+  await teacherController.getTeachers(req, res);
 });
 
 router.post("/", async (req, res) => {
