@@ -6,7 +6,8 @@
     "strict": false,
     "lib": ["esnext"],
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "strictNullChecks": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
