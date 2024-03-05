@@ -7,7 +7,6 @@ class TeacherController {
   async getTeacher(req: Request, res: Response): Promise<void> {
     const { params } = req;
     if (params.id && params.id.length > 0) {
-      console.log(params.id);
       const teacherId: number = parseInt(params.id);
       const teacher = await prisma.teacher.findUnique({
         where: {
@@ -60,8 +59,12 @@ class TeacherController {
         },
       });
       res.send({ id: teacher.id });
-    } catch (error: unknown) {
+    } catch (error: any) {
       console.error("Error creating teacher: ", error);
+      if (error.code === "P2002") {
+        res.status(400).send(`User with email '${body.email}' already exists`);
+        return;
+      }
       res.status(500).send("Internal Server Error");
     }
   }
@@ -88,8 +91,12 @@ class TeacherController {
         })
       );
       res.send(teachersInserted.map((teacher) => ({ id: teacher.id })));
-    } catch (error: unknown) {
-      console.error("Error Creating Teachers: ", error);
+    } catch (error: any) {
+      console.error("Error creating teachers: ", error);
+      if (error.code === "P2002") {
+        res.status(400).send(`One of the teachers already exists`);
+        return;
+      }
       res.status(500).send("Internal Server Error");
     }
   }
