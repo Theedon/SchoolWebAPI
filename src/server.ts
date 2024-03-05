@@ -1,12 +1,15 @@
 import express, { type Express } from "express";
 import "dotenv/config";
-import router from "./routes/Teacher";
+import teacherRouter from "./routes/Teacher";
+import studentRouter from "./routes/Student";
 
 const app: Express = express();
 
 app.use(express.json());
 
-app.use("/teachers", router);
+app.use("/teachers", teacherRouter);
+
+app.use("/students", studentRouter);
 
 // Start Server
 const PORT = process.env.PORT ?? 3000;
