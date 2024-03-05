@@ -7,12 +7,15 @@ export interface TeacherInputType extends BaseInterface {
   bio?: string;
   phone?: string;
   experience: number;
+  email: string;
 }
 
 export interface StudentInputType extends BaseInterface {
   age: number;
   bio?: string;
   phone?: string;
+  email: string;
+  classroomId: number;
 }
 
 export interface ClassroomInputType extends BaseInterface {

@@ -31,7 +31,6 @@ class TeacherController {
         await this.createMultipleTeachers(teachersData, res);
       } else if (
         typeof teachersData === "object" &&
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
         teacherSchema.parse(teachersData)
       ) {
         await this.createSingleTeacher(teachersData, res);
@@ -49,10 +48,11 @@ class TeacherController {
     res: Response
   ): Promise<void> {
     try {
-      const { name, age, bio, phone, experience } = body;
+      const { name, email, age, bio, phone, experience } = body;
       const teacher = await prisma.teacher.create({
         data: {
           name,
+          email,
           age,
           bio,
           phone,
@@ -73,17 +73,18 @@ class TeacherController {
     try {
       const teachersInserted = await Promise.all(
         teachersArray.map(async (teacher) => {
-          const { name, age, bio, phone, experience } = teacher;
+          const { name, email, age, bio, phone, experience } = teacher;
           const createdTeacher = await prisma.teacher.create({
             data: {
               name,
+              email,
               age,
               bio,
               phone,
               experience,
             },
           });
-          return createdTeacher; // Return the created teacher
+          return createdTeacher;
         })
       );
       res.send(teachersInserted.map((teacher) => ({ id: teacher.id })));
