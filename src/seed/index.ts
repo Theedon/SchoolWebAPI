@@ -9,11 +9,14 @@ async function main(): Promise<void> {
     });
   }
 
-  const TEACHER_ID = await prisma.teacher.findFirst();
+  const getRandomId = (): number => {
+    return Math.floor(Math.random() * 5) + 1;
+  };
+  // const TEACHER_ID = await prisma.teacher.findFirst();
   for (const classroom of Classrooms) {
     await prisma.classroom.create({
       data: {
-        teacherId: TEACHER_ID?.id ?? 1,
+        teacherId: getRandomId(),
         name: classroom.name,
         capacity: classroom.capacity,
         location: classroom.location,
@@ -21,14 +24,14 @@ async function main(): Promise<void> {
     });
   }
 
-  const CLASSROOM_ID = await prisma.classroom.findFirst();
+  // const CLASSROOM_ID = await prisma.classroom.findFirst();
   for (const student of Students) {
     await prisma.student.create({
       data: {
         age: student.age,
         name: student.name,
         bio: student.bio,
-        classroomId: CLASSROOM_ID?.id ?? 1,
+        classroomId: getRandomId(),
         email: student.email,
         phone: student.phone,
       },
