@@ -48,7 +48,7 @@ model Student {
 // Model definition for Classroom.
 model Classroom {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   @unique
   capacity  Int?
   location  String?
   teacherId Int

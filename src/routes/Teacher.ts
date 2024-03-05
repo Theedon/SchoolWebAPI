@@ -14,6 +14,10 @@ router.get("/", async (req, res) => {
   await teacherController.getTeachers(req, res);
 });
 
+router.get("/:id/students", async (req, res) => {
+  await teacherController.getStudentsUnderTeacher(req, res);
+});
+
 router.post("/", async (req, res) => {
   await teacherController.createTeacher(req, res);
 });
