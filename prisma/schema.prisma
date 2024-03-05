@@ -13,6 +13,7 @@ datasource db {
 // Model definition for Teacher.
 model Teacher {
   id         Int      @id @default(autoincrement())
+  email      String?  @unique
   name       String
   age        Int
   experience Int
@@ -30,6 +31,7 @@ model Teacher {
 // Model definition for Student.
 model Student {
   id          Int      @id @default(autoincrement())
+  email       String?  @unique
   name        String
   age         Int
   bio         String?
