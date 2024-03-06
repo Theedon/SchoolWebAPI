@@ -3,7 +3,16 @@ import type { Request, Response } from "express";
 import { studentSchema } from "../validators";
 import type { StudentInputType } from "../types";
 
+/**
+ * StudentController handles Create and Read operations for students.
+ */
 class StudentController {
+  /**
+   * Gets a student by ID from the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when student is fetched from db and response sent
+   */
   async getStudent(req: Request, res: Response): Promise<void> {
     const { params } = req;
     try {
@@ -26,6 +35,12 @@ class StudentController {
     }
   }
 
+  /**
+   * Gets all students from the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when students are fetched
+   */
   async getStudents(req: Request, res: Response): Promise<void> {
     try {
       const students = await prisma.student.findMany({});
@@ -40,6 +55,12 @@ class StudentController {
     }
   }
 
+  /**
+   * Gets the teacher assigned to a student.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when teacher is fetched from db and response sent
+   */
   async getTeacherAssignedToStudent(
     req: Request,
     res: Response
@@ -73,6 +94,12 @@ class StudentController {
     }
   }
 
+  /**
+   * Creates a new student or students depending on request body.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns Promise resolving when student(s) are created
+   */
   async createStudent(req: Request, res: Response): Promise<void> {
     const { body: studentsData } = req;
     try {
@@ -95,6 +122,12 @@ class StudentController {
     }
   }
 
+  /**
+   * Helper method to insert a single student record in the database.
+   * @param body - The student data to create.
+   * @param res - The response object to send the result.
+   * @returns A promise that resolves when the student is created.
+   */
   private async createSingleStudent(
     body: StudentInputType,
     res: Response
@@ -122,6 +155,12 @@ class StudentController {
     }
   }
 
+  /**
+   * Helper method to insert multiple student records in the database.
+   * @param studentsArray - The array of student data to create.
+   * @param res - The response object to send the result.
+   * @returns A promise that resolves when the students are created.
+   */
   private async createMultipleStudents(
     studentsArray: StudentInputType[],
     res: Response

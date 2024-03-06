@@ -2,9 +2,17 @@ import prisma from "../lib/client";
 import type { Request, Response } from "express";
 import { teacherSchema } from "../validators";
 import type { TeacherInputType } from "../types";
-import { Student } from "@prisma/client";
 
+/**
+ * Class containing controller methods for CREATE AND READ operations on Teachers.
+ */
 class TeacherController {
+  /**
+   * Gets a teacher by ID.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns A promise that resolves when the teacher has been fetched and response sent
+   */
   async getTeacher(req: Request, res: Response): Promise<void> {
     const { params } = req;
     try {
@@ -27,6 +35,12 @@ class TeacherController {
     }
   }
 
+  /**
+   * Gets all teachers from the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns A promise that resolves when the teachers have been fetched and response sent
+   */
   async getTeachers(req: Request, res: Response): Promise<void> {
     try {
       const teachers = await prisma.teacher.findMany({});
@@ -63,6 +77,12 @@ class TeacherController {
     }
   }
 
+  /**
+   * Gets all students for a given teacher ID from the database.
+   * @param req - The request object.
+   * @param res - The response object.
+   * @returns A promise that resolves when the students under a teacher have been fetched and response sent
+   */
   async getStudentsUnderTeacher(req: Request, res: Response): Promise<void> {
     const { params } = req;
     try {
@@ -95,6 +115,12 @@ class TeacherController {
     }
   }
 
+  /**
+   * Creates a single teacher record in the database.
+   * @param body - The teacher data to create.
+   * @param res - The response object.
+   * @returns A promise that resolves when the teacher is created.
+   */
   private async createSingleTeacher(
     body: TeacherInputType,
     res: Response
@@ -122,6 +148,12 @@ class TeacherController {
     }
   }
 
+  /**
+   * Creates multiple teacher records in the database.
+   * @param teachersArray - The array of teacher data to create.
+   * @param res - The response object.
+   * @returns A promise that resolves when the teachers are created.
+   */
   private async createMultipleTeachers(
     teachersArray: TeacherInputType[],
     res: Response

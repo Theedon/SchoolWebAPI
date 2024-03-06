@@ -1,6 +1,9 @@
 import { Classrooms, Students, Teachers } from "./data";
 import prisma from "../lib/client";
 
+/**
+ * Seeds the database by creating Teacher, Classroom, and Student records.
+ */
 async function main(): Promise<void> {
   // insert Teachers data
   for (const teacher of Teachers) {

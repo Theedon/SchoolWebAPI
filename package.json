@@ -4,7 +4,7 @@
   "description": "a simple school web API for managing the data of teachers, classrooms,and students",
   "main": "server.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "npx tsc -p tsconfig.json",
     "test": "jest",
     "start": "npm run build && nodemon ./dist/server.js",
     "dev": "nodemon",
