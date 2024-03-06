@@ -11,7 +11,8 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --ext .js,.ts --fix"
+    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "postinstall": "npx prisma generate"
   },
   "author": "Theedon",
   "license": "ISC",
