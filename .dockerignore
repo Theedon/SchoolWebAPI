@@ -1,0 +1,21 @@
+# Exclude the node_modules directory since dependencies will be installed inside the Docker container
+node_modules
+
+# Exclude the 'dist' directory where built files are stored
+dist
+
+# Exclude npm debug logs
+npm-debug.log
+
+# Exclude the .git directory
+.git
+
+# Exclude the .gitignore file itself
+.gitignore
+
+# Exclude Visual Studio Code related files and directories
+.vscode
+
+
+# Exclude the '.github' directory where GitHub Actions workflows are stored
+.github

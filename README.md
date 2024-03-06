@@ -42,7 +42,7 @@ A simple school web API for managing the data of teachers, students and classroo
 ### Docker Container
 
 - Build the app image using the provided Dockerfile `docker build -t schoolwebapi .`
-- Run a container from the image `docker run -p 8888:80 schoolwebapi`
+- Run a container from the image `docker run -p 3000:3000 --name schoolapi schoolwebapi`
 
 ## Examples and Documentation
 
