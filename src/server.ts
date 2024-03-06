@@ -1,10 +1,14 @@
 import express, { type Express } from "express";
 import "dotenv/config";
+import cors from "cors";
 import teacherRouter from "./routes/Teacher";
 import studentRouter from "./routes/Student";
 import classroomRouter from "./routes/Classroom";
 
 const app: Express = express();
+
+// Enable CORS requests from all origins
+app.use(cors());
 
 // Home URL is introductory URL
 app.get("/", (req, res) => {
