@@ -71,6 +71,7 @@ jobs:
           echo "PORT=${{ env.PORT }}" >> .env
           echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
 
+
       # - name: Google Auth
       #   id: auth
       #   uses: 'google-github-actions/auth@v2'
