@@ -2,7 +2,7 @@
 # It checks out the code, sets up Node.js, installs dependencies, runs linting,
 # and prints a message if linting fails.
 
-name: Lint code
+name: Linter
 
 on:
   push:

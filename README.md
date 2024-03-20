@@ -59,3 +59,11 @@ A simple school web API for managing the data of teachers, students and classroo
 ---
 
 - **Formatting**: This project uses Prettier for consistent code formatting.
+
+## Workflows
+
+[![Code Build](https://github.com/Theedon/SchoolWebAPI/actions/workflows/build.yml/badge.svg)](https://github.com/Theedon/SchoolWebAPI/actions/workflows/build.yml)
+
+[![Linting](https://github.com/Theedon/SchoolWebAPI/actions/workflows/linter.yml/badge.svg)](https://github.com/Theedon/SchoolWebAPI/actions/workflows/linter.yml)
+
+[![Cloud run Deployment](https://github.com/Theedon/SchoolWebAPI/actions/workflows/cloudrun-deploy.yml/badge.svg)](https://github.com/Theedon/SchoolWebAPI/actions/workflows/cloudrun-deploy.yml)

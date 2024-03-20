@@ -2,7 +2,7 @@
 # It checks out the code, sets up Node.js, installs dependencies, runs building,
 # and prints a message if building fails.
 
-name: Build|Transpile
+name: Build
 
 on:
   push:
@@ -11,19 +11,22 @@ on:
     branches: [main] # Also run on pull requests targeting the main branch
 
 jobs:
-  build:
-    runs-on: ubuntu-latest # Use the latest Ubuntu environment
-
+  tsc:
+    name: tsc
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # Checkout the repository code
-      - uses: actions/setup-node@v4 # Set up Node.js environment
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - run: yarn install # Install dependencies
+      - name: install packages
+        run: npm install
 
-      - name: Run Build
-        run: yarn build # Execute the build command
+      - name: Build
+        uses: icrawl/action-tsc@v1
 
       - name: Check for build errors
         if: failure() # Only run if the linting step failed
