@@ -2,7 +2,7 @@
 # It checks out the code, sets up Node.js, installs dependencies, runs building,
 # and prints a message if building fails.
 
-name: Build|Transpile
+name: Build
 
 on:
   push:
