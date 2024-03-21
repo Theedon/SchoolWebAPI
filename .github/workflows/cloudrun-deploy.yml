@@ -1,37 +1,60 @@
-name: Cloudrun deploy
-
+---
+name: Build and Deploy to Cloud Run
 on:
   push:
-    branches:
-      - "main"
-
+    branches: ["main"]
+env:
+  PROJECT_ID: webaas # TODO: update Google Cloud project id
+  GAR_LOCATION: europe-west3 # TODO: update Artifact Registry location
+  IMAGE_NAME: schoolwebapi
+  SERVICE: school-web # TODO: update Cloud Run service name
+  REGION: europe-west3 # TODO: update Cloud Run service region
 jobs:
-  deploy:
+  build-push-gcr:
+    name: Build and Push to GCP
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: install the gcloud cli
-        uses: google-github-actions/setup-gcloud@v0
+      - name: Make envfile
+        run: |
+          echo "PORT=${{ env.PORT }}" >> .env
+          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
         with:
-          project_id: ${{secrets.GOOGLE_PROJECT}}
-          service_account_key: ${{secrets.GCP_CREDENTIALS}}
-          install_components: "gke-cloud-auth-plugin"
-          export_default_credentials: true
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
 
-      - name: build and push the docker container
-        env:
-          GOOGLE_PROJECT: ${{secrets.GOOGLE_PROJECT}}
-        run: |
-          gcloud auth configure-docker europe-west3-docker.pkg.dev
-          docker build -t europe-west3-docker.pkg.dev/$GOOGLE_PROJECT/school-web/school-web-api:latest .
-          docker push europe-west3-docker.pkg.dev/$GOOGLE_PROJECT/school-web/school-web-api:latest
+      - uses: google-github-actions/setup-gcloud@v1
 
-      - name: deploy to gke
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_NAME:latest .
+
+      - name: Configure Docker Client
+        run: |-
+          gcloud auth configure-docker --quiet
+          gcloud auth configure-docker "${{env.GAR_LOCATION}}-docker.pkg.dev" --quiet
+
+      - name: Push Docker Image to Artifact Registry
         env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-        run: |
-          gcloud container clusters get-credentials autopilot-cluster-1 --region europe-west3
-          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" resources.yaml
-          kubectl apply -f resources.yaml
+          GIT_TAG: ${{ github.sha }}
+        run: |-
+          docker tag $IMAGE_NAME:latest "${{env.GAR_LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.SERVICE}}/${{env.IMAGE_NAME}}:latest"
+          docker tag "${{env.IMAGE_NAME}}:latest" "${{env.GAR_LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.SERVICE}}/${{env.IMAGE_NAME}}:$GIT_TAG"
+          docker push "${{env.GAR_LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.SERVICE}}/${{env.IMAGE_NAME}}:latest"
+          docker push "${{env.GAR_LOCATION}}-docker.pkg.dev/${{env.PROJECT_ID}}/${{env.SERVICE}}/${{env.IMAGE_NAME}}:$GIT_TAG"
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          # NOTE: If using a pre-built image, update the image name here
+          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{env.IMAGE_NAME}}:latest
+
+        # If required, use the Cloud Run url output in later steps
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
