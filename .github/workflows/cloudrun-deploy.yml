@@ -2,7 +2,7 @@ name: Build and Deploy to Cloud Run
 
 on:
   push:
-    branches: ["*"]
+    branches: ["main"]
 
 env:
   PROJECT_ID: webaas # TODO: update Google Cloud project id
