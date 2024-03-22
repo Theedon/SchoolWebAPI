@@ -2,7 +2,7 @@
 name: Build and Deploy to Cloud Run
 on:
   push:
-    branches: ["main"]
+    branches: ["*"]
 env:
   PROJECT_ID: webaas # TODO: update Google Cloud project id
   GAR_LOCATION: europe-west3 # TODO: update Artifact Registry location
@@ -17,10 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Make envfile
-        run: |
-          echo "PORT=${{ env.PORT }}" >> .env
-          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
+      # - name: Make envfile
+      #   run: |
+      #     echo "PORT=${{ env.PORT }}" >> .env
+      #     echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
 
       - id: "auth"
         uses: "google-github-actions/auth@v1"
@@ -50,6 +50,9 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
+          env_vars: |
+            PORT = ${{env.PORT}}
+            DATABASE_URL = ${{env.DATABASE_URL}}
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here
