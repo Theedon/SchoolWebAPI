@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc -p tsconfig.json",
     "test": "jest",
-    "start": "npm run build && nodemon ./dist/server.js",
+    "start": "npm run build && node ./dist/server.js",
     "dev": "nodemon",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
@@ -45,6 +45,6 @@
     "prettier-plugin-prisma": "^5.0.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.3"
   }
 }
