@@ -44,6 +44,13 @@ A simple school web API for managing the data of teachers, students and classroo
 - Build the app image using the provided Dockerfile `docker build -t schoolwebapi .`
 - Run a container from the image `docker run -p 3000:3000 --name schoolapi schoolwebapi`
 
+## Serverless Deployment
+
+- Docker image is built and uploaded to Google Artifact Registry
+- Image is then served to Google Cloud Run for deployment
+- Both processes carried out with Github Actions (CI/CD)
+- Deployment [link here](https://school-web-timswx7tqa-ey.a.run.app)
+
 ## Examples and Documentation
 
 [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://god.gw.postman.com/run-collection/29235308-8cadc63f-3073-4738-8ead-1d1f36e9b316?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D29235308-8cadc63f-3073-4738-8ead-1d1f36e9b316%26entityType%3Dcollection%26workspaceId%3D47c11685-bcc1-46b4-bbe3-9b1340079800)
